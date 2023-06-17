@@ -32,9 +32,9 @@ CREATE TABLE sales_products (
     PRIMARY KEY (sale_id, product_id)
 );
 
-CREATE TABLE custumers (
-    custumer_id INT UNSIGNED PRIMARY KEY,
-    custumer_name VARCHAR(255) NOT NULL,
+CREATE TABLE customers (
+    customer_id INT UNSIGNED PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -45,3 +45,21 @@ CREATE TABLE employees (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO sales (employee_id, customer_id, sale_date, sale_value)
+VALUES (1, 1, '2023-06-15', 100.00);
+
+INSERT INTO customer (customer_id, customer_name)
+VALUES (1, 'John Doe');
+
+INSERT INTO employees (employee_id, employee_name)
+VALUES (1, 'Jane Smith');
+
+INSERT INTO products (product_id, product_name, product_category, product_price)
+VALUES (1, 'Product A', 'Category A', 10.99);
+
+INSERT INTO sales_products (sale_id, product_id)
+VALUES (1, 1);
+
+ALTER TABLE custumers RENAME COLUMN custumer_name TO customer_name;
+RENAME TABLE custumers TO customers;

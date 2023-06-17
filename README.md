@@ -15,7 +15,7 @@ listagem com:
 ## sales
 - sale_id
 - employee_id
-- custumer_id
+- customer_id
 - sale_date
 - sale_value
 
@@ -36,6 +36,6 @@ listagem com:
 - employee_id
 - employee_name
 
-## custumers
-- custumer_id
-- custumer_name
+## customers
+- customer_id
+- customer_name
