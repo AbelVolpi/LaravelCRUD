@@ -62,4 +62,22 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function getCustomers(Request $request)
+    {
+      
+        if (isset($request->searchTerm) && !empty($request->searchTerm) && !ctype_space($request->searchTerm)) {
+            $customers = Customer::where('customer_name', 'LIKE', '%' . $request->searchTerm . '%')->get();
+        } else {
+            $customers = Customer::all();
+        }
+
+        $response = [];
+
+        foreach ($customers as $customer) {
+            $response[] = array("id" => $customer->customer_id, "text" => $customer->customer_name);
+        }
+
+        return response()->json($response);
+    }
 }

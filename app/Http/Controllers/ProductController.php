@@ -62,4 +62,22 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function getProducts(Request $request)
+    {
+      
+        if (isset($request->searchTerm) && !empty($request->searchTerm) && !ctype_space($request->searchTerm)) {
+            $products = Product::where('product_name', 'LIKE', '%' . $request->searchTerm . '%')->get();
+        } else {
+            $products = Product::all();
+        }
+
+        $response = [];
+
+        foreach ($products as $product) {
+            $response[] = array("id" => $product->product_id, "text" => $product->product_name);
+        }
+
+        return response()->json($response);
+    }
 }

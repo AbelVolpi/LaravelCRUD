@@ -26,11 +26,6 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function getEmployeeById($id)
-    {
-        $employee = Employee::find($id);
-        return  $employee;
-    }
 
     /**
      * Display the specified resource.
@@ -62,5 +57,23 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //
+    }
+
+    public function getEmployees(Request $request)
+    {
+      
+        if (isset($request->searchTerm) && !empty($request->searchTerm) && !ctype_space($request->searchTerm)) {
+            $employees = Employee::where('employee_name', 'LIKE', '%' . $request->searchTerm . '%')->get();
+        } else {
+            $employees = Employee::all();
+        }
+
+        $response = [];
+
+        foreach ($employees as $employee) {
+            $response[] = array("id" => $employee->employee_id, "text" => $employee->employee_name);
+        }
+
+        return response()->json($response);
     }
 }

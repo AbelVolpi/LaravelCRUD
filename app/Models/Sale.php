@@ -27,6 +27,11 @@ class Sale extends Model
         return $this->hasOne(Customer::class, 'customer_id', 'customer_id');
     }
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'employee_id', 'employee_id');
+    }
+
     public function map()
     {
 

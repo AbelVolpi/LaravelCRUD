@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 @section('content')
     <div class="container">
         <h1>Listagem de Vendas</h1>
@@ -34,7 +33,7 @@
                         </td>
                         <td>{{ $saleDetail->totalValue }}</td>
                         <td>
-                            <a href="" class="info-icon">
+                            <a href="/sales/{{$saleDetail->sale_id}}" class="info-icon">
                                 <img src="{{ asset('icons/info.svg') }}" alt="Info Icon" height="20">
                             </a>
                             <a href="" class="edit-icon">
