@@ -22,4 +22,14 @@ class Sale extends Model
         return $this->belongsToMany(Product::class, 'sales_products');
     }
 
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'customer_id', 'customer_id');
+    }
+
+    public function map()
+    {
+
+    }
+
 }

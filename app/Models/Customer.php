@@ -14,5 +14,9 @@ class Customer extends Model
     protected $primaryKey = 'customer_id';
     protected $table = 'sales_manager.customers';
     public $timestamps = true;
+
+    public function sales(){
+        return $this->belongsTo(Sale::class);
+    }
     
 }
