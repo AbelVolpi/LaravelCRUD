@@ -99,11 +99,16 @@ class SaleController extends Controller
         $saleDetail->saleDate = $sale->getAttribute('sale_date');
 
         // products name
-        $products = $sale->products();
-        $saleDetail->productsNameList = $products->pluck('product_name')->all();
+        $products = $sale->products()->get();
+        $saleDetail->productsList = $products;
 
         //total value
-        $saleDetail->totalValue = $products->sum('product_price');
+        $total = 0;
+        foreach($products as $product){
+            $total+= $product->product_price * $product->pivot->quantity;
+        }
+
+        $saleDetail->totalValue = $total;
 
         return $saleDetail;
     }

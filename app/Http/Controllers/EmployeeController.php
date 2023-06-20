@@ -20,9 +20,17 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('screens/create-employee');
     }
 
+    public function store(Request $request)
+    {
+        $employee = new Employee();
+        $employee->employee_name = $request->name;
+        $employee->save();
+
+        return redirect()->to(route('index'));
+    }
     /**
      * Store a newly created resource in storage.
      */

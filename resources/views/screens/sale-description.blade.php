@@ -10,8 +10,8 @@
         <p><strong>Date of Sale:</strong> {{ $saleDetail->saleDate }}</p>
         <h2>Products:</h2>
         <ul>
-            @foreach ($saleDetail->productsNameList as $productName)
-                <li>{{ $productName }}</li>
+            @foreach ($saleDetail->productsList as $product)
+                <li>{{ $product->product_name }} | Qtd: {{ $product->pivot->quantity }}</li>
             @endforeach
         </ul>
         <p><strong>Total Value:</strong> {{ $saleDetail->totalValue }}</p>

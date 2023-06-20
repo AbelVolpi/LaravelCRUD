@@ -20,7 +20,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('screens/create-customer');
     }
 
     /**
@@ -28,7 +28,11 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = new Customer();
+        $customer->customer_name = $request->name;
+        $customer->save();
+
+        return redirect()->to(route('index'));
     }
 
     /**

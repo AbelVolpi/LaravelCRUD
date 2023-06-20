@@ -11,7 +11,7 @@ class SaleDetail
     public $employeeName;
     public $customerName;
     public $saleDate;
-    public $productsNameList = [];
+    public $productsList = [];
     public $totalValue;
 
 }

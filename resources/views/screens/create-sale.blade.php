@@ -32,8 +32,8 @@
 
             <div class="form-group">
                 <label for="sale_date">Sale Date:</label>
-                <input type="text" id="sale_date" name="sale_date " class="form-control select2"
-                    placeholder="YYYY-MM-DD">
+                <input type="date" id="sale_date" name="sale_date " class="form-control select2"
+                    placeholder="">
             </div>
 
             <div class="form-group">
