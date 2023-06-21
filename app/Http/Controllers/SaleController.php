@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
+use App\Models\Employee;
+use App\Models\Product;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\SaleDetail;
 
 class SaleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $sales = Sale::all();
@@ -24,17 +25,11 @@ class SaleController extends Controller
         return view('screens/index', ['saleDetailList' => $saleDetailList]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('screens/create-sale');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -48,15 +43,12 @@ class SaleController extends Controller
 
         foreach ($selectedProducts as $selectedProduct) {
             list($productId, $quantity) = explode(':', $selectedProduct);
-            $sale->products()->attach($productId, ['quantity' => $quantity]);   
+            $sale->products()->attach($productId, ['quantity' => $quantity]);
         }
 
         return redirect()->to(route('index'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $sale = Sale::find($id);
@@ -65,31 +57,44 @@ class SaleController extends Controller
         return view('screens/sale-description', ['saleDetail' => $saleDetail]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $sale = Sale::find($id);
-        $products = $sale->products();
+        $employees = Employee::all();
+        $customers = Customer::all();
+        $products = Product::all();
 
-        return view('screens/edit-item', ['sale' => $sale, 'products' => $products]);
+        return view('screens/edit-sale', ['sale' => $sale, 'employees' => $employees, 'customers' => $customers, 'products' => $products,]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, $sale_id)
     {
-        //
+        $sale = Sale::find($sale_id);
+        $sale->employee_id = $request->employeeId;
+        $sale->customer_id = $request->customerId;
+        $sale->sale_date = $request->saleDate;
+        $sale->save();
+
+        $selectedProducts = json_decode($request->selectedProducts);
+
+        // Remove todos os produtos existentes da venda antes de atualizá-los
+        $sale->products()->detach();
+
+
+        foreach ($selectedProducts as $selectedProduct) {
+            list($productId, $quantity) = explode(':', $selectedProduct);
+            $sale->products()->attach($productId, ['quantity' => $quantity]);
+        }
+
+        return redirect()->to(route('index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sale $sale)
+    public function destroy($sale_id)
     {
-        //
+        $sale = Sale::find($sale_id);
+        $sale->products()->detach();
+        $sale->delete();
+        return redirect()->to(route('index'));
     }
 
     private function saleSaleDetailMapper(Sale $sale)
