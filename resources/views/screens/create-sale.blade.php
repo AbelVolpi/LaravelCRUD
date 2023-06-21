@@ -25,24 +25,29 @@
 
             <div class="form-group">
                 <label for="customer">Customer:</label>
-                <select id="customerSelect" name="customer" class="form-control select2">
+                <select id="customerSelect" name="customerId" class="form-control select2">
                     <option value="">Select customer</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="sale_date">Sale Date:</label>
-                <input type="date" id="sale_date" name="sale_date " class="form-control select2"
-                    placeholder="">
+                <input type="date" id="sale_date" name="saleDate" class="form-control select2" placeholder="">
             </div>
 
             <div class="form-group">
                 <label for="products">Products:</label>
-                <select id="productSelect" name="productsId[]" class="form-control select2" multiple required>
+                <select id="productSelect" name="productId" class="form-control select2">
                     <option value="">Select products</option>
                 </select>
             </div>
-
+            <div class="text-right">
+                <button id="addProductBtn" class="btn btn-primary">Adicionar</button>
+            </div>
+            <div id="productList">
+                <!-- Lista de produtos adicionados -->
+            </div>
+            <input type="hidden" id="selectedProductsInput" name="selectedProducts[]">
             <button id="create-button" type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>
@@ -80,7 +85,6 @@
         function setUptMultiSelect2(componentId, route) {
             $(document).ready(function() {
                 $(componentId).select2({
-                    multiple: true,
                     theme: 'bootstrap4',
                     ajax: {
                         url: route,
@@ -102,10 +106,72 @@
                 });
             });
         }
+
+        $('#addProductBtn').click(function() {
+            event.preventDefault();
+            var productName = $('#productSelect option:selected').text()
+            var productId = $('#productSelect option:selected').val()
+            addProductToList(productId, productName)
+        });
+
+        function addProductToList(productId, productName) {
+
+            if ($('#productList').find('#product-' + productId).length > 0) {
+                alert('O produto já foi adicionado.');
+                return;
+            }
+
+            var productItem = $('<div class="product-item" id="product-' + productId + '">');
+            var productNameElement = $('<span class="product-name">' + productName + '</span>');
+            var quantityElement = $('<input type="number" class="product-quantity" value="1" data-product-id="' +
+                productId + '">');
+
+            // Adiciona os elementos à div do produto
+            productItem.append(productNameElement);
+            productItem.append(quantityElement);
+
+            // Adiciona a div do produto à lista
+            $('#productList').append(productItem);
+
+
+            updateSelectedProductsInput();
+        }
+
+        function updateSelectedProductsInput() {
+            var selectedProducts = [];
+
+            $('.product-item').each(function() {
+                var productId = $(this).attr('id').split('-')[1];
+                var quantity = $(this).find('.product-quantity').val();
+
+                selectedProducts.push(productId + ':' + quantity);
+            });
+
+            $('#selectedProductsInput').val(selectedProducts.join(','));
+        }
     </script>
     <style>
         #create-button {
             margin-top: 20px;
+        }
+
+        #addProductBtn {
+            margin-bottom: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            margin-right: 10px;
+        }
+
+        .product-quantity {
+            width: 80px;
+            margin-left: 10px;
         }
     </style>
 @endsection

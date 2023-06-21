@@ -20,7 +20,7 @@ use App\Http\Controllers\RegisterController;
 // Routes for sales
 Route::get('/', [SaleController::class, 'index'])->name('index');
 Route::get('/sales/{sale_id}', [SaleController::class, 'show']);
-Route::get('/sales/edit/{sale_id}', [SaleController::class, 'edit']);
+Route::get('/sales/edit/{sale_id}', [SaleController::class, 'edit'])->name('sales.edit');
 Route::get('/sale-creation', [SaleController::class, 'create'])->name('sales.create');
 Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
 

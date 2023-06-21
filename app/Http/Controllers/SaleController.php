@@ -37,7 +37,21 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $sale = new Sale();
+        $sale->employee_id = $request->employeeId;
+        $sale->customer_id = $request->customerId;
+        $sale->sale_date = $request->saleDate;
+        $sale->save();
+
+        $selectedProducts = $request->selectedProducts;
+
+        foreach ($selectedProducts as $selectedProduct) {
+            list($productId, $quantity) = explode(':', $selectedProduct);
+            $sale->products()->attach($productId, ['quantity' => $quantity]);   
+        }
+
+        return redirect()->to(route('index'));
     }
 
     /**
@@ -104,8 +118,8 @@ class SaleController extends Controller
 
         //total value
         $total = 0;
-        foreach($products as $product){
-            $total+= $product->product_price * $product->pivot->quantity;
+        foreach ($products as $product) {
+            $total += $product->product_price * $product->pivot->quantity;
         }
 
         $saleDetail->totalValue = $total;
