@@ -19,4 +19,25 @@ class Product extends Model
     {
         return $this->belongsToMany(Sale::class, 'sales_products');
     }
+
+ public static function rules(){
+        return([
+            'name' => 'required|string',
+            'category' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
+    }
+
+
+    public static function message(){
+        return([
+            'name.required' => 'Campo obrigatório',
+            'category.required' => 'Campo obrigatório',
+            'price.required' => 'Campo obrigatório',
+            'name.string' => 'Campo precisa ser texto',
+            'category.string' => 'Campo precisa ser texto',
+            'price.numeric' => 'Campo precisa ser numérico'
+        ]); 
+    }
+
 }

@@ -29,6 +29,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate(Product::rules(), Product::message());
+
         $product = new Product();
         $product->product_name = $request->name;
         $product->product_category = $request->category;

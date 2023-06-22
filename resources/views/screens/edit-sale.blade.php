@@ -13,7 +13,7 @@
 
     <div class="container">
         <h1>Edit Sale</h1>
-        <form action="{{ route('sales.update', ['sale_id' => $sale->sale_id]) }}" method="POST">
+        <form action="{{ route('sales.update', ['sale_id' => $sale->sale_id]) }}" method="POST" id="edit-form">
             @csrf
             @method('PUT')
             {{-- todo verify duplicated method --}}
@@ -62,10 +62,10 @@
             <div id="productList">
                
                 @foreach ($sale->products as $product)
-                    <div class="product-item" id="product-{{ $product->id }}">
-                        <span class="product-name">{{ $product->product_name }}</span>
+                    <div class="product-item" id="product-{{ $product->product_id  }}">
+                        <span class="product-name">{{ $product->product_name  }}</span>
                         <input type="number" class="product-quantity" value="{{ $product->pivot->quantity }}"
-                            data-product-id="{{ $product->id }}">
+                            data-product-id="{{ $product->product_id }}">
                     </div>
                 @endforeach
             </div>
@@ -136,6 +136,14 @@
             var productId = $('#productSelect option:selected').val()
             addProductToList(productId, productName)
         });
+        
+        $('#update-button').click(function(){
+            event.preventDefault();
+
+            updateSelectedProductsInput();
+            
+            $('#edit-form').submit();
+        });
 
         function addProductToList(productId, productName) {
 
@@ -155,7 +163,6 @@
 
             // Adiciona a div do produto à lista
             $('#productList').append(productItem);
-
 
             updateSelectedProductsInput();
         }
